@@ -1,0 +1,67 @@
+[
+    {
+    "division": "Dashboard",
+    "section": [
+      {
+        "title": "Dashboard",
+        "icon": "DashboardOutlined"
+        
+      }
+    ]
+  },
+  {
+    "division": "Class Info",
+    "section": [
+      {
+        "title": "Students",
+        "icon": "GroupsOutlined",
+        "options": [
+          {
+            "title": "Student Info",
+            "icon": "ListOutlined"
+          },
+          {
+            "title": "Add Student",
+            "icon": "PlaylistAddOutlined"
+            
+          }
+        ]
+      },
+      {
+        "title": "Teachers",
+        "icon": "SupervisorAccountOutlined",
+        "options": [
+          {
+            "title": "Homeworks",
+            "icon": "AssignmentOutlined"
+            
+          },
+          {
+            "title": "Examinations",
+            "icon": "QuizOutlined"
+            
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "division": "Addons",
+    "section": [
+      {
+        "title": "Calendar",
+        "icon": "CalendarMonthOutlined"
+        
+      },
+      {
+        "title": "Results",
+        "icon": "AssessmentOutlined"
+        
+      },
+      {
+        "title": "Time Table",
+        "icon": "TableChartOutlined"
+      }
+    ]
+  }
+]
