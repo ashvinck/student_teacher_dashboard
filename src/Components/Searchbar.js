@@ -2,6 +2,8 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { alpha, InputBase } from '@mui/material';
 import { Search } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { updateSearchTerm } from '../Features/Search/Searchslice';
 
 // -------- Search Bar Customizations --------
 const SearchWrapper = styled('div')(({ theme }) => ({
@@ -45,6 +47,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export const Searchbar = () => {
+  const dispatch = useDispatch();
+
+  const handleInputChange = (event) => {
+    const term = event.target.value;
+    console.log(term);
+    dispatch(updateSearchTerm(term));
+  };
+
   return (
     <SearchWrapper>
       <SearchIconWrapper>
@@ -53,6 +63,7 @@ export const Searchbar = () => {
       <StyledInputBase
         placeholder='Search…'
         inputProps={{ 'aria-label': 'search' }}
+        onChange={handleInputChange}
       />
     </SearchWrapper>
   );

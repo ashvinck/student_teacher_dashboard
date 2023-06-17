@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Projects",
+    "icon": "Assignment",
+    "color": "#f44336"
+  },
+  {
+    "title": "Syllabus",
+    "icon": "LibraryBooks",
+    "color": "#03a9f4"
+  },
+  {
+    "title": "Homework",
+    "icon": "TaskAlt",
+    "color": "#4caf50"
+  },
+  {
+    "title": "Library",
+    "icon": "LocalLibrary",
+    "color": "#e91e63"
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "examinations": [
+    { "title": "Unit Test 1" },
+    { "title": "Unit Test 2" },
+    { "title": "Periodic Assessment 1" },
+    { "title": "Unit Test 3" },
+    { "title": "Unit Test 4" },
+    { "title": "Periodic Assessment 2" }
+  ]
+}

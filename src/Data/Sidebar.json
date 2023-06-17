@@ -1,66 +1,146 @@
 [
-    {
-    "division": "Dashboard",
-    "section": [
-      {
-        "title": "Dashboard",
-        "icon": "DashboardOutlined"
-        
-      }
-    ]
-  },
   {
-    "division": "Class Info",
-    "section": [
+    "type": "teacher",
+    "content": [
       {
-        "title": "Students",
-        "icon": "GroupsOutlined",
-        "options": [
+        "division": "Dashboard",
+        "section": [
           {
-            "title": "Student Info",
-            "icon": "ListOutlined"
-          },
-          {
-            "title": "Add Student",
-            "icon": "PlaylistAddOutlined"
-            
+            "title": "Dashboard",
+            "icon": "DashboardOutlined",
+            "to": ":userRoles/:classId/"
           }
         ]
       },
       {
-        "title": "Teachers",
-        "icon": "SupervisorAccountOutlined",
-        "options": [
+        "division": "Class Info",
+        "section": [
           {
-            "title": "Homeworks",
-            "icon": "AssignmentOutlined"
-            
+            "title": "Students",
+            "icon": "GroupsOutlined",
+            "to": ":userRoles/:classId/students"
+          },
+          {
+            "title": "Assignments",
+            "icon": "AssignmentOutlined",
+            "to": ":userRoles/:classId/assignment"
+          },
+          {
+            "title": "Time Table",
+            "icon": "TableChartOutlined",
+            "to": ":userRoles/:classId/timetable/"
+          },
+          {
+            "title": "Calendar",
+            "icon": "CalendarMonthOutlined",
+            "to": ":userRoles/:classId/calendar"
           },
           {
             "title": "Examinations",
-            "icon": "QuizOutlined"
-            
+            "icon": "QuizOutlined",
+            "to": ":userRoles/:classId/examinations"
+          },
+          {
+            "title": "Results",
+            "icon": "AssessmentOutlined",
+            "to": ":userRoles/:classId/results/"
+          }
+        ]
+      },
+      {
+        "division": "Add ons",
+        "section": [
+          {
+            "title": "Attendance",
+            "icon": "HowToRegOutlined",
+            "to": ":userRoles/:classId/attendance"
+          }
+        ]
+      },
+      {
+        "division": "Miscellaneous",
+        "section": [
+          {
+            "title": "Other Class Info",
+            "icon": "InfoOutlined",
+            "to": ":userRoles/:classId/miscellaneous"
           }
         ]
       }
     ]
   },
   {
-    "division": "Addons",
-    "section": [
+    "type": "student",
+    "content": [
       {
-        "title": "Calendar",
-        "icon": "CalendarMonthOutlined"
-        
+        "division": "Dashboard",
+        "section": [
+          {
+            "title": "Dashboard",
+            "icon": "DashboardOutlined",
+            "to": ":userRoles/:classId/dashboard"
+          }
+        ]
       },
       {
-        "title": "Results",
-        "icon": "AssessmentOutlined"
-        
+        "division": "Addons",
+        "section": [
+          {
+            "title": "Assignments",
+            "icon": "AssignmentOutlined",
+            "to": ":userRoles/:classId/assignments"
+          },
+          {
+            "title": "Time Table",
+            "icon": "TableChartOutlined",
+            "to": ":userRoles/:classId/timetable"
+          },
+          {
+            "title": "Calendar",
+            "icon": "CalendarMonthOutlined",
+            "to": ":userRoles/:classId/calendar"
+          },
+          {
+            "title": "Examinations",
+            "icon": "QuizOutlined",
+            "to": ":userRoles/:classId/examinations"
+          },
+          {
+            "title": "Results",
+            "icon": "AssessmentOutlined",
+            "to": ":userRoles/:classId/results"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "admin",
+    "content": [
+      {
+        "division": "Dashboard",
+        "section": [
+          {
+            "title": "Dashboard",
+            "icon": "DashboardOutlined",
+            "to": ":userRoles/users"
+          }
+        ]
       },
       {
-        "title": "Time Table",
-        "icon": "TableChartOutlined"
+        "division": "Class Info",
+        "section": [
+          {
+            "title": "Time Table",
+            "icon": "TableChartOutlined",
+            "to": ":userRoles/:classId/timetable"
+          },
+          {
+            "title": "Staff Info",
+            "icon": "CalendarMonthOutlined",
+            "to": ":userRoles/:classId/staffInfo"
+          }
+        ]
       }
     ]
   }

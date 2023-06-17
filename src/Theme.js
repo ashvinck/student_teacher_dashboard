@@ -24,4 +24,11 @@ export const customizations = (mode) => ({
   typography: {
     fontFamily: ['Poppins', 'sans-serif'].join(','),
   },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true, // No more ripple, on the whole application 💣!
+      },
+    },
+  },
 });
