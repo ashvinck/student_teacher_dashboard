@@ -8,10 +8,12 @@ import { SummaryBox } from '../../Components/Boxes/SummaryBox';
 import { AttendanceCharts } from '../../Components/Boxes/AttendanceCharts';
 import { ResultsChart } from '../../Components/Boxes/ResultsChart';
 import { Timetable } from './Timetable';
+import { useParams } from 'react-router-dom';
 
 const StudentDashboard = () => {
+  const { classId } = useParams();
   const { data, isLoading, isSuccess, isError, error } =
-    useGetStudentDataQuery();
+    useGetStudentDataQuery(classId);
 
   const miscellaneousData = data?.miscellaneousInfo;
   const attendanceData = data?.attendance;
@@ -24,15 +26,12 @@ const StudentDashboard = () => {
     content = <Loading open={isLoading} />;
   } else if (isSuccess) {
     content = (
-      <>
-        <PageTitle title={`Class ${data.classId}`} />
-        <Box>
-          <SummaryBox data={miscellaneousData} />
-          <AttendanceCharts data={attendanceData} />
-          <ResultsChart data={resultsData} students={totalStudents} />
-          <Timetable />
-        </Box>
-      </>
+      <Box sx={{ mt: 2 }}>
+        <SummaryBox data={miscellaneousData} />
+        <AttendanceCharts data={attendanceData} />
+        <ResultsChart data={resultsData} students={totalStudents} />
+        <Timetable />
+      </Box>
     );
   } else if (isError) {
     content = <Error error={error} />;

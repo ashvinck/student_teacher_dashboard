@@ -8,6 +8,7 @@ import {
   TableCell,
   TextField,
   Button,
+  Box,
 } from '@mui/material';
 import { useUpdateTimetableMutation } from '../adminApiSlice';
 import { useParams } from 'react-router-dom';
@@ -87,51 +88,57 @@ export const UpdateTimetable = ({ data }) => {
   return (
     <CardWrapper title='Update Timetable'>
       <ToastContainer />
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell
-              sx={{
-                backgroundColor: theme.palette.primary.main,
-                color: theme.palette.common.white,
-              }}
-            >
-              <strong>Day</strong>
-            </TableCell>
-            {[...Array(NUM_PERIODS)].map((_, index) => (
+      <Box sx={{ width: '100%', overflowX: 'auto' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
               <TableCell
-                key={index}
                 sx={{
                   backgroundColor: theme.palette.primary.main,
                   color: theme.palette.common.white,
-                  width: '100px',
                 }}
               >
-                <strong>Period {index + 1}</strong>
+                <strong>Day</strong>
               </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tableData.map((data, dayIndex) => (
-            <TableRow key={data.day}>
-              <TableCell>{data.day}</TableCell>
-              {data.periods.map((period, periodIndex) => (
-                <TableCell key={periodIndex}>
-                  <TextField
-                    value={period}
-                    onChange={(e) =>
-                      handlePeriodChange(dayIndex, periodIndex, e.target.value)
-                    }
-                    required
-                    sx={{ width: '100px' }}
-                  />
+              {[...Array(NUM_PERIODS)].map((_, index) => (
+                <TableCell
+                  key={index}
+                  sx={{
+                    backgroundColor: theme.palette.primary.main,
+                    color: theme.palette.common.white,
+                    width: '100px',
+                  }}
+                >
+                  <strong>Period {index + 1}</strong>
                 </TableCell>
               ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {tableData.map((data, dayIndex) => (
+              <TableRow key={data.day}>
+                <TableCell>{data.day}</TableCell>
+                {data.periods.map((period, periodIndex) => (
+                  <TableCell key={periodIndex}>
+                    <TextField
+                      value={period}
+                      onChange={(e) =>
+                        handlePeriodChange(
+                          dayIndex,
+                          periodIndex,
+                          e.target.value
+                        )
+                      }
+                      required
+                      sx={{ width: '100px' }}
+                    />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
       <Button
         variant='contained'
         color='primary'

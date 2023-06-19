@@ -29,15 +29,12 @@ const TeacherDashboard = () => {
     content = <Loading open={isLoading} />;
   } else if (isSuccess) {
     content = (
-      <>
-        {/* <PageTitle title={`Class ${data.classId}`} /> */}
-        <Box>
-          <SummaryBox data={miscellaneousData} />
-          <AttendanceCharts data={attendanceData} />
-          <ResultsChart data={resultsData} students={totalStudents} />
-          <TimeTableBox />
-        </Box>
-      </>
+      <Box sx={{ mt: 2 }}>
+        <SummaryBox data={miscellaneousData} />
+        <AttendanceCharts data={attendanceData} />
+        <ResultsChart data={resultsData} students={totalStudents} />
+        <TimeTableBox />
+      </Box>
     );
   } else if (isError) {
     content = <Error error={error} />;

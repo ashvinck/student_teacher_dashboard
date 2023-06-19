@@ -11,7 +11,6 @@ import { formatDate } from '@fullcalendar/core';
 import { CardWrapper } from './CardWrapper';
 
 export const Events = (events) => {
-  // console.log(events);
   return (
     <CardWrapper title='Events'>
       <Box sx={{ my: 3 }}>

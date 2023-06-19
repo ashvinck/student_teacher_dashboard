@@ -9,10 +9,12 @@ import { CardWrapper } from '../../Components/CardWrapper';
 import Loading from '../../Components/Loading';
 import Error from '../../Components/Error';
 import { CustomNoRowsOverlay } from '../../Components/NoRowsOverlay';
+import { useParams } from 'react-router-dom';
 
 export const Assignments = () => {
+  const { classId } = useParams();
   const { data, isLoading, isSuccess, isError, error } =
-    useGetStudentDataQuery();
+    useGetStudentDataQuery(classId);
 
   //  Importing values of Search from AppBar Search
   const { searchTerm } = useSelector(setSearchTerm);

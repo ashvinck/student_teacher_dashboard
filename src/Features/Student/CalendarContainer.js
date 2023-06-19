@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { useGetStudentDataQuery } from './studentApiSlice';
 import Loading from '../../Components/Loading';
 import { Grid } from '@mui/material';
@@ -7,8 +8,9 @@ import { Events } from '../../Components/Events';
 import Error from '../../Components/Error';
 
 export const CalendarContainer = () => {
+  const { classId } = useParams();
   const { data, isLoading, isSuccess, isError, error } =
-    useGetStudentDataQuery();
+    useGetStudentDataQuery(classId);
 
   const events = data?.events;
 

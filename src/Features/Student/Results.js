@@ -1,4 +1,6 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
+
 import { useGetStudentDataQuery } from './studentApiSlice';
 import { useSelector } from 'react-redux';
 import { setSearchTerm } from '../Search/Searchslice';
@@ -10,8 +12,9 @@ import { CustomNoRowsOverlay } from '../../Components/NoRowsOverlay';
 import Error from '../../Components/Error';
 
 export const Results = () => {
+  const { classId } = useParams();
   const { data, isLoading, isSuccess, isError, error } =
-    useGetStudentDataQuery();
+    useGetStudentDataQuery(classId);
 
   //  Importing values of Search from AppBar Search
   const { searchTerm } = useSelector(setSearchTerm);
@@ -37,6 +40,7 @@ export const Results = () => {
     const term = searchTerm ?? '';
     if (term.trim() === '') return true;
     return (
+      item.id?.toLowerCase().includes(term) ||
       item.examType?.toLowerCase().includes(term) ||
       item.description?.toLowerCase().includes(term)
     );

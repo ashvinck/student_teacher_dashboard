@@ -78,7 +78,7 @@
           {
             "title": "Dashboard",
             "icon": "DashboardOutlined",
-            "to": ":userRoles/:classId/dashboard"
+            "to": ":userRoles/:classId"
           }
         ]
       },

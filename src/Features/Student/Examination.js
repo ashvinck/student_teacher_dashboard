@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
@@ -11,9 +12,9 @@ import Error from '../../Components/Error';
 import { CustomNoRowsOverlay } from '../../Components/NoRowsOverlay';
 
 export const Examination = () => {
+  const { classId } = useParams();
   const { data, isLoading, isSuccess, isError, error } =
-    useGetStudentDataQuery();
-
+    useGetStudentDataQuery(classId);
   //  Importing values of Search from AppBar Search
   const { searchTerm } = useSelector(setSearchTerm);
 

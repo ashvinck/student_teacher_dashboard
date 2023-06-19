@@ -14,13 +14,13 @@ import { OtherInfo } from '../Features/Teachers/MiscellaneousInfo/OtherInfo';
 import StudentDashboard from '../Features/Student/StudentDashboard';
 import { Assignments } from '../Features/Student/Assignments';
 import { Timetable } from '../Features/Student/Timetable';
-import { Calendar } from '../Features/Student/Calendar';
 import { Examination } from '../Features/Student/Examination';
 import { Results } from '../Features/Student/Results';
 import { UsersData } from '../Features/Admin/GetUsers';
 import ROLES_LIST from '../Data/Roles.json';
 import { AdminTimeTable } from '../Features/Admin/Timetable/AdminTimetable';
 import { StaffContainer } from '../Features/Admin/StaffTable/AdminStaffContainer';
+import { CalendarContainer } from '../Features/Student/CalendarContainer';
 
 const DashboardRoutes = () => {
   return (
@@ -75,7 +75,10 @@ const DashboardRoutes = () => {
             element={<Assignments />}
           />
           <Route path='student/:classId/timetable' element={<Timetable />} />
-          <Route path='student/:classId/calendar' element={<Calendar />} />
+          <Route
+            path='student/:classId/calendar'
+            element={<CalendarContainer />}
+          />
           <Route
             path='student/:classId/examinations'
             element={<Examination />}
