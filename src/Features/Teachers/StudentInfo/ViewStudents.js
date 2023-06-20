@@ -11,6 +11,7 @@ import { setSearchTerm } from '../../Search/Searchslice';
 import { CustomNoRowsOverlay } from '../../../Components/NoRowsOverlay';
 import { UpdateStudent } from './UpdateStudent';
 import { useDeleteStudentMutation } from '../teachersApiSlice';
+import Loading from '../../../Components/Loading';
 
 export const ViewStudents = ({ data }) => {
   const { classId } = useParams(); // Retrieve classId from the URL parameters
@@ -118,52 +119,57 @@ export const ViewStudents = ({ data }) => {
 
   return (
     <Box sx={{ height: 760, width: '100%', marginTop: '20px' }}>
-      <DataGrid
-        style={{ padding: '20px' }}
-        rows={filteredData}
-        columns={columns}
-        pageSizeOptions={[10]}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 10,
-            },
-          },
-        }}
-        localeText={{
-          toolbarDensity: 'Size',
-          toolbarDensityLabel: 'Size',
-          toolbarDensityCompact: 'Small',
-          toolbarDensityStandard: 'Medium',
-          toolbarDensityComfortable: 'Large',
-        }}
-        components={{
-          Toolbar: GridToolbar,
-        }}
-        // To style the toolbar of MUI
-        componentsProps={{
-          panel: {
-            sx: {
-              '& .MuiDataGrid-filterForm': {
-                position: 'absolute',
-                top: '-100px',
-                backgroundColor: '#F8F8F8',
+      <ToastContainer />
+      {isLoading ? (
+        <Loading open={isLoading} />
+      ) : (
+        <>
+          <DataGrid
+            style={{ padding: '20px' }}
+            rows={filteredData}
+            columns={columns}
+            pageSizeOptions={[10]}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 10,
+                },
               },
-            },
-          },
-        }}
-        autoHeight
-        disableSelectionOnClick
-        slots={{
-          noRowsOverlay: CustomNoRowsOverlay,
-        }}
-      />
-      {/* ------------ Form for Updating ---------- */}
-      <Dialog open={editDialogOpen} onClose={handleSaveEdit}>
-        <DialogContent>
-          <UpdateStudent data={editedItem} id={selectedItemId} />
-        </DialogContent>
-      </Dialog>
+            }}
+            localeText={{
+              toolbarDensity: 'Size',
+              toolbarDensityLabel: 'Size',
+              toolbarDensityCompact: 'Small',
+              toolbarDensityStandard: 'Medium',
+              toolbarDensityComfortable: 'Large',
+            }}
+            autoHeight
+            disableSelectionOnClick
+            slots={{
+              noRowsOverlay: CustomNoRowsOverlay,
+              toolbar: GridToolbar,
+            }}
+            // To style the toolbar of MUI
+            slotProps={{
+              panel: {
+                sx: {
+                  '& .MuiDataGrid-filterForm': {
+                    position: 'absolute',
+                    top: '-100px',
+                    backgroundColor: '#F8F8F8',
+                  },
+                },
+              },
+            }}
+          />
+          {/* ------------ Form for Updating ---------- */}
+          <Dialog open={editDialogOpen} onClose={handleSaveEdit}>
+            <DialogContent>
+              <UpdateStudent data={editedItem} id={selectedItemId} />
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
     </Box>
   );
 };

@@ -6,8 +6,6 @@ import { useGetStudentDataQuery } from './studentApiSlice';
 import Loading from '../../Components/Loading';
 import Error from '../../Components/Error';
 import { SummaryBox } from '../../Components/Boxes/SummaryBox';
-import { AttendanceCharts } from '../../Components/Boxes/AttendanceCharts';
-import { ResultsChart } from '../../Components/Boxes/ResultsChart';
 import { Timetable } from './Timetable';
 
 const StudentDashboard = () => {
@@ -18,8 +16,7 @@ const StudentDashboard = () => {
     useGetStudentDataQuery(classId);
 
   // Filtering Data from API response
-  const { miscellaneousInfo, attendance, results, studentInfo } = data || {};
-  const totalStudents = studentInfo?.length;
+  const { miscellaneousInfo } = data || {};
 
   let content;
 
@@ -31,8 +28,6 @@ const StudentDashboard = () => {
     content = (
       <Box sx={{ mt: 2 }}>
         <SummaryBox data={miscellaneousInfo} />
-        <AttendanceCharts data={attendance} />
-        <ResultsChart data={results} students={totalStudents} />
         <Timetable />
       </Box>
     );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,9 +19,6 @@ import Loading from '../../../Components/Loading';
 // Teacher Calendar component
 // Renders the calendar based on the classId
 export const TeacherCalendar = (events) => {
-  // Hook for setting events
-  const [event, setEvent] = useState([]);
-
   const { classId } = useParams(); // Retrieve classId from the URL parameters
 
   // Mutation hook for add Events
@@ -118,7 +115,6 @@ export const TeacherCalendar = (events) => {
               dayMaxEvents={true}
               select={handleDateClick}
               eventClick={handleEventClick}
-              eventsSet={(event) => setEvent(event)}
             />
           </Box>
         </Box>
