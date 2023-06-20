@@ -1,23 +1,27 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { Grid } from '@mui/material';
 import { useGetStudentDataQuery } from './studentApiSlice';
 import Loading from '../../Components/Loading';
-import { Grid } from '@mui/material';
+import Error from '../../Components/Error';
 import { Calendar } from './Calendar';
 import { Events } from '../../Components/Events';
-import Error from '../../Components/Error';
 
 export const CalendarContainer = () => {
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
+  // Query hook for fetching studentData
   const { data, isLoading, isSuccess, isError, error } =
     useGetStudentDataQuery(classId);
 
-  const events = data?.events;
+  // Filtering Events Data
+  const { events } = data || {};
 
   let content;
   if (isLoading) {
-    content = <Loading open={isLoading} />;
-  } else if (isSuccess) {
+    content = <Loading open={isLoading} />; // Show loading state while fetching data
+  }
+  // Render the staff container if data is successfully fetched
+  else if (isSuccess) {
     content = (
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
@@ -28,7 +32,9 @@ export const CalendarContainer = () => {
         </Grid>
       </Grid>
     );
-  } else if (isError) {
+  }
+  // Show error message if there's an error fetching data
+  else if (isError) {
     content = <Error error={error} />;
   }
   return content;

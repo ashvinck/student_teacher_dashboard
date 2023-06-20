@@ -7,18 +7,23 @@ import { AddExamination } from './AddExamination';
 import { ViewExaminations } from './ViewExaminations';
 import { useParams } from 'react-router-dom';
 
-// Examinations - POST,UPDATE,DELETE
+// TeacherExamination component
+// Renders the teacher examination based on the classId
 export const TeacherExaminationContainer = () => {
-  const { classId } = useParams();
-  // GET classData
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
+
+  // Fetch staff data based on the classId
   const { data, isLoading, isSuccess, isError, error } =
     useGetTeacherDataQuery(classId);
 
   let content;
 
+  // Show loading state while fetching data
   if (isLoading) {
     content = <Loading open={isLoading} />;
-  } else if (isSuccess) {
+  }
+  // Render the staff container if data is successfully fetched
+  else if (isSuccess) {
     content = (
       <TeacherCardWrapper
         title='Examination'
@@ -26,7 +31,9 @@ export const TeacherExaminationContainer = () => {
         children={<ViewExaminations data={data} />}
       />
     );
-  } else if (isError) {
+  }
+  // Show error message if there's an error fetching data
+  else if (isError) {
     content = <Error error={error} />;
   }
   return content;

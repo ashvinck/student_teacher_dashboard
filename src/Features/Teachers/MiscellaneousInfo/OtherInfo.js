@@ -18,7 +18,7 @@ const StyledSlider = styled(Slider)(({ value }) => ({
 }));
 
 export const OtherInfo = () => {
-  const { classId } = useParams(); //To determine the class
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
   const [syllabusCompleted, setSyllabusCompleted] = useState(0);
   const [projectsSubmitted, setProjectsSubmitted] = useState(0);
@@ -26,15 +26,15 @@ export const OtherInfo = () => {
   const [libraryBooksReturned, setLibraryBooksReturned] = useState(0);
 
   const { data, isLoading, isSuccess, isError, error } =
-    useGetTeacherDataQuery(classId); //Getting Class Data
+    useGetTeacherDataQuery(classId); // Query for getting teacher Data
 
-  // For POST requests
+  // mutation hook for posting miscellaneous Info
   const [addMiscellanousInfo] = useAddMiscellanousInfoMutation();
 
   useEffect(() => {
     if (isSuccess) {
       const progressMap = new Map(
-        data?.miscellaneousInfo.map((info) => [info.title, info.progress])
+        data?.miscellaneousInfo?.map((info) => [info.title, info.progress])
       );
 
       setSyllabusCompleted(progressMap.get('Syllabus') || 0);
@@ -72,24 +72,26 @@ export const OtherInfo = () => {
     // Prepare data to send to the API
     addMiscellanousInfo({ classId: classId, data })
       .unwrap()
-      .then((response) => toast.success(response.message))
+      .then((response) => toast.success(response.message)) // Show success message using toast
       .catch((error) => {
         const errorMessage =
           error?.error?.message ||
           error?.data?.error?.message ||
           'An error occurred.';
-        toast.error(errorMessage);
+        toast.error(errorMessage); // Show error message using toast
       });
   };
 
   let content;
 
   if (isLoading) {
-    content = <Loading open={isLoading} />;
-  } else if (isSuccess) {
+    content = <Loading open={isLoading} />; // Show loading state while fetching data
+  }
+  // Render the staff container if data is successfully fetched
+  else if (isSuccess) {
     content = (
       <CardWrapper title='Update Other Info'>
-        <ToastContainer />
+        <ToastContainer /> {/* Container for displaying toast messages */}
         <Box>
           <Typography gutterBottom>
             Syllabus Completed: {syllabusCompleted}%
@@ -148,7 +150,9 @@ export const OtherInfo = () => {
         </Box>
       </CardWrapper>
     );
-  } else if (isError) {
+  }
+  // Show error message if there's an error fetching data
+  else if (isError) {
     content = <Error error={error} />;
   }
   return content;

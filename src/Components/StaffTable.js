@@ -21,7 +21,7 @@ export const StaffTable = ({ data }) => {
       <Table
         size='small'
         aria-label='staff table'
-        sx={{ minHeight: { lg: '350px' } }}
+        sx={{ overflowY: 'auto', minHeight: { lg: '350px' } }}
       >
         <TableHead>
           <TableRow>
@@ -31,7 +31,7 @@ export const StaffTable = ({ data }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {data?.map((row) => (
             <TableRow
               key={row.name}
               sx={{

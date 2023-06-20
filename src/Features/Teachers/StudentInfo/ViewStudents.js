@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { Box, Dialog, DialogContent, IconButton } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { setSearchTerm } from '../../Search/Searchslice';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { Box, Dialog, DialogContent, IconButton } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
+import { setSearchTerm } from '../../Search/Searchslice';
 import { CustomNoRowsOverlay } from '../../../Components/NoRowsOverlay';
 import { UpdateStudent } from './UpdateStudent';
 import { useDeleteStudentMutation } from '../teachersApiSlice';
 
 export const ViewStudents = ({ data }) => {
-  // Getting ClsId
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
-  // Delete Results API Call
-  const [deleteStudent] = useDeleteStudentMutation();
+  // mutation hook for deleting student info
+  const [deleteStudent, { isLoading }] = useDeleteStudentMutation();
 
+  // Getting Search parameters from Redux Store
   // Importing value od Search from AppBar Search
   const { searchTerm } = useSelector(setSearchTerm);
 
-  // Edit Dialogue
+  // State for edit dialog visibility
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   // Getting Id for update and delete
@@ -35,27 +37,36 @@ export const ViewStudents = ({ data }) => {
     contactInfo: '',
   });
 
-  // Edit Function
+  // Function to handle edit studentnInfo
   const handleEdit = (id) => {
-    const selectedItem = data?.studentInfo?.find((item) => item.id === id);
+    const selectedItem = data?.find((item) => item.id === id);
     setSelectedItemId(id);
     setEditedItem(selectedItem);
     setEditDialogOpen(true);
   };
+  // Dialog close
   const handleSaveEdit = async () => {
     setEditDialogOpen(false);
   };
 
   // Delete Function
   const handleDelete = (id) => {
+    // Alert to confirm delete
     const confirmDelete = window.confirm(
       'Do you really want to delete this item?'
     );
+    //  If yes , Call the deleteAssignment mutation with the classId and id
     if (confirmDelete) {
       deleteStudent({ classId: classId, id })
         .unwrap()
-        .then((response) => toast.success(response.message))
-        .catch((error) => toast.error(error.error || error.data.error.message));
+        .then((response) => toast.success(response.message)) // Show success message using toast
+        .catch((error) => {
+          const errorMessage =
+            error?.error?.message ||
+            error?.data?.error?.message ||
+            'An error occurred.';
+          toast.error(errorMessage); // Show error message using toast
+        });
     } else return;
   };
 
@@ -90,10 +101,10 @@ export const ViewStudents = ({ data }) => {
 
     if (term.trim() === '') {
       // No search term, display all data
-      setFilteredData(data?.studentInfo || []);
+      setFilteredData(data || []);
     } else {
       // Filter data based on search term
-      const filteredExaminations = data?.studentInfo?.filter(
+      const filteredExaminations = data?.filter(
         (stdnt) =>
           stdnt.id?.includes(term) ||
           stdnt.name?.toLowerCase().includes(term) ||
@@ -103,7 +114,7 @@ export const ViewStudents = ({ data }) => {
       );
       setFilteredData(filteredExaminations || []);
     }
-  }, [searchTerm, data?.studentInfo]);
+  }, [searchTerm, data]);
 
   return (
     <Box sx={{ height: 760, width: '100%', marginTop: '20px' }}>
@@ -147,6 +158,7 @@ export const ViewStudents = ({ data }) => {
           noRowsOverlay: CustomNoRowsOverlay,
         }}
       />
+      {/* ------------ Form for Updating ---------- */}
       <Dialog open={editDialogOpen} onClose={handleSaveEdit}>
         <DialogContent>
           <UpdateStudent data={editedItem} id={selectedItemId} />

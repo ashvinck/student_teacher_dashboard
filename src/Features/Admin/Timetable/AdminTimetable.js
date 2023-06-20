@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+
 import { useGetClassDataQuery } from '../adminApiSlice';
 import Loading from '../../../Components/Loading';
 import Error from '../../../Components/Error';
@@ -7,31 +8,36 @@ import { AdminCardWrapper } from '../../../Components/AdminCardWrapper';
 import { TimeTable } from '../../../Components/TimeTable';
 import { UpdateTimetable } from './UpdateTimetable';
 
-// Main Function
+// TimeTableContainer component
+// Renders the TimeTable container based on the classId
 export const AdminTimeTable = () => {
-  // to determine classId
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
-  // Fetching data
+  // Fetching data based on the classId
   const { data, isLoading, isSuccess, isError, error } =
     useGetClassDataQuery(classId);
 
   // Filtering timetable data
-  const timeTableData = data?.timetable;
+  const { timetable } = data || {};
 
   let content;
 
+  // Show loading state while fetching data
   if (isLoading) {
     content = <Loading open={isLoading} />;
-  } else if (isSuccess) {
+  }
+  // Render the staff container if data is successfully fetched
+  else if (isSuccess) {
     content = (
       <AdminCardWrapper
         title='Time Table'
-        dialogChildren={<UpdateTimetable data={timeTableData} />}
-        children={<TimeTable data={timeTableData} />}
+        dialogChildren={<UpdateTimetable data={timetable} />}
+        children={<TimeTable data={timetable} />}
       />
     );
-  } else if (isError) {
+  }
+  // Show error message if there's an error fetching data
+  else if (isError) {
     content = <Error error={error} />;
   }
   return content;

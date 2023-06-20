@@ -37,7 +37,7 @@ const StyledTypography = styled(Typography)(() => ({
 }));
 
 export const UpdateResults = ({ data, id }) => {
-  const { classId } = useParams(); //for identifying the class
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
   const [updateResult, { isLoading }] = useUpdateResultsMutation();
 

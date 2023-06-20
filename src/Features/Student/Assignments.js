@@ -11,13 +11,17 @@ import Error from '../../Components/Error';
 import { CustomNoRowsOverlay } from '../../Components/NoRowsOverlay';
 import { useParams } from 'react-router-dom';
 
+// Renders the Assignments of particular classes based in classId
 export const Assignments = () => {
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
   const { data, isLoading, isSuccess, isError, error } =
-    useGetStudentDataQuery(classId);
+    useGetStudentDataQuery(classId); // Fetch studentData based on the ClassId
 
+  // Get the search term from Redux store
   //  Importing values of Search from AppBar Search
   const { searchTerm } = useSelector(setSearchTerm);
+
+  // Columns for DataGrid MUI component
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'subject', headerName: 'Subject Name', width: 175 },
@@ -52,8 +56,10 @@ export const Assignments = () => {
   let content;
 
   if (isLoading) {
-    content = <Loading open={isLoading} />;
-  } else if (isSuccess) {
+    content = <Loading open={isLoading} />; // Show loading state while fetching data
+  }
+  // Render content if Fetch is Success
+  else if (isSuccess) {
     content = (
       <CardWrapper title='Assignments'>
         <Box sx={{ height: '100%', width: '100%', marginTop: '20px' }}>
@@ -77,7 +83,9 @@ export const Assignments = () => {
         </Box>
       </CardWrapper>
     );
-  } else if (isError) {
+  }
+  // IF fetch returns error
+  else if (isError) {
     content = <Error error={error} />;
   }
   return content;

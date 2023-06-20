@@ -34,16 +34,23 @@ const StyledTypography = styled(Typography)(() => ({
 }));
 
 export const UpdateExamination = ({ data, id, staffData }) => {
-  const { classId } = useParams(); //for identifying the class
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
-  const [updateExamination, { isLoading }] = useUpdateExaminationMutation(); //POST API call
+  const [updateExamination, { isLoading }] = useUpdateExaminationMutation(); //mutation hook for updating examination
 
-  // Updating Exam and response Handling
+  // Function for Updating Exam and response Handling
   const updateExam = (data) => {
+    // Call the updateExam mutation with the classId,id and data
     updateExamination({ classId: classId, id: id, data })
       .unwrap()
-      .then((response) => toast.success(response.message))
-      .catch((error) => toast.error(error.error || error.data.error.message));
+      .then((response) => toast.success(response.message)) // Show success message using toast
+      .catch((error) => {
+        const errorMessage =
+          error?.error?.message ||
+          error?.data?.error?.message ||
+          'An error occurred.';
+        toast.error(errorMessage); // Show error message using toast
+      });
   };
 
   // Formik form handling
@@ -57,17 +64,17 @@ export const UpdateExamination = ({ data, id, staffData }) => {
     validationSchema: ExamsValidationSchema,
     onSubmit: (values) => {
       // console.log('onExamUpload', values);
-      updateExam(values);
+      updateExam(values); // Call updateExam function to handle form submission
     },
   });
 
   return (
     // Title
     <CardWrapper title='Update Examination'>
-      <ToastContainer />
+      <ToastContainer /> {/* Container for displaying toast messages */}
       {/* -------- Form ------- */}
       {isLoading ? (
-        <Loading open={isLoading} />
+        <Loading open={isLoading} /> // Show loading indicator while submitting data
       ) : (
         <Grid
           container
@@ -78,7 +85,6 @@ export const UpdateExamination = ({ data, id, staffData }) => {
           spacing={3}
           onSubmit={formik.handleSubmit}
         >
-          <ToastContainer />
           {/* ------ ID ------- */}
           <Grid item xs={12}>
             <TextField
@@ -176,7 +182,12 @@ export const UpdateExamination = ({ data, id, staffData }) => {
 
           {/* -------- Submit Button ----- */}
           <Grid item xs={12}>
-            <Button variant='contained' type='submit' fullWidth>
+            <Button
+              variant='contained'
+              type='submit'
+              disabled={formik.isSubmitting} // Disable the button when submitting the form
+              fullWidth
+            >
               Update Examination
             </Button>
           </Grid>

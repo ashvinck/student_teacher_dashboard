@@ -70,7 +70,7 @@ const SignUpValidationSchema = yup.object({
 
 // Signup form
 const SignUp = () => {
-  const [signup, { isLoading }] = useSignupMutation(); //signup mutation
+  const [signup, { isLoading }] = useSignupMutation(); // mutation hook for signup of user
   const navigate = useNavigate();
 
   // Formik configuration
@@ -85,15 +85,16 @@ const SignUp = () => {
     validationSchema: SignUpValidationSchema,
     onSubmit: (values) => {
       // console.log('onSignup', values);
-      signupUser(values); // calling auth signup function
+      signupUser(values); // Call signupUser function to handle form submission
     },
   });
 
   // Auth signup function
   const signupUser = (credentials) => {
+    // Call the signup mutation with credentials
     signup(credentials)
       .unwrap()
-      .then((response) => toast.success(response.message))
+      .then((response) => toast.success(response.message)) // Show success message using toast
       .then(() =>
         setTimeout(() => {
           navigate('/auth/login');
@@ -104,10 +105,11 @@ const SignUp = () => {
           error?.error?.message ||
           error?.data?.error?.message ||
           'An error occurred.';
-        toast.error(errorMessage);
+        toast.error(errorMessage); // Show error message using toast
       });
   };
 
+  // Password Visibility hook
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -138,7 +140,7 @@ const SignUp = () => {
             justifyContent: 'center',
           }}
         >
-          <ToastContainer />
+          <ToastContainer /> {/* Container for displaying toast messages */}
           <Box sx={{ m: 2 }}>
             <img src={Logo} alt='logo' height='32' width='32' />
           </Box>

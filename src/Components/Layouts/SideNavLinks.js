@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as icons from '@mui/icons-material';
 import { useTheme } from '@emotion/react';
+
 import {
   Divider,
   List,
@@ -11,8 +13,8 @@ import {
   ListItemIcon,
 } from '@mui/material';
 import styled from '@emotion/styled';
+
 import NavbarLinks from '../../Data/Sidebar.json';
-import { useSelector } from 'react-redux';
 import {
   selectCurrentClassId,
   selectCurrentRole,
@@ -25,7 +27,7 @@ export const SideNavLinks = () => {
   const mobScreenView = useSelector(selectMobView);
   const theme = useTheme();
 
-  const StyledListItemButton = styled(ListItemButton)(() => ({
+  const StyledListItemButton = styled(ListItemButton)(({ focused }) => ({
     flexDirection: mobScreenView ? 'column' : 'row',
     justifyContent: mobScreenView ? 'center' : 'initial',
     '&:hover': {
@@ -38,7 +40,20 @@ export const SideNavLinks = () => {
       backgroundColor:
         theme.palette.mode === 'light' ? theme.palette.primary[50] : '#00386F',
       color: theme.palette.primary.main,
+      outline: 'none',
     },
+    '&:active': {
+      borderRight: `3px solid ${theme.palette.primary[500]}`,
+      backgroundColor:
+        theme.palette.mode === 'light' ? theme.palette.primary[50] : '#00386F',
+      color: theme.palette.primary.main,
+    },
+    ...(focused && {
+      borderRight: `3px solid ${theme.palette.primary[500]}`,
+      backgroundColor:
+        theme.palette.mode === 'light' ? theme.palette.primary[50] : '#00386F',
+      color: theme.palette.primary.main,
+    }),
   }));
 
   const StyledListItemIcon = styled(ListItemIcon)(() => ({
@@ -46,6 +61,11 @@ export const SideNavLinks = () => {
     color: theme.palette.primary[500],
   }));
 
+  const [focusedItem, setFocusedItem] = useState(null);
+
+  const handleItemClick = (item) => {
+    setFocusedItem(item);
+  };
   const NavLinks = NavbarLinks.filter((user) => user.type === `${role}`);
 
   // Replace placeholders in URL with actual values
@@ -80,12 +100,15 @@ export const SideNavLinks = () => {
               {item.section.map((navLinks) => {
                 const Icon = icons[navLinks.icon];
                 const to = replaceUrlPlaceholders(navLinks.to, classId, role);
+                const isFocused = focusedItem === navLinks.title;
                 return (
                   <StyledListItemButton
                     key={navLinks.title}
                     variant='sidenav'
                     component={Link}
+                    focused={isFocused}
                     to={to}
+                    onClick={() => handleItemClick(navLinks.title)}
                   >
                     <StyledListItemIcon>
                       {<Icon sx={{ fontSize: '1.3rem' }}>{navLinks.icon}</Icon>}

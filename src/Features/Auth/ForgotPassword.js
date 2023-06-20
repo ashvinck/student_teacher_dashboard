@@ -19,9 +19,7 @@ const StyledTypography = styled(Typography)(() => ({
   color: 'red',
 }));
 
-// Validation Schema using YUP
-// email : required
-//password : min 8, max 15 , 0-9(number) & 1 special character required,
+// Define validation Schema using yup
 const ForgotPasswordValidationSchema = yup.object({
   email: yup
     .string()
@@ -31,9 +29,11 @@ const ForgotPasswordValidationSchema = yup.object({
     .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 'Invalid format'),
 });
 
-// Forgot password form
+// Forgot password Form Component
 const ForgotPassword = () => {
+  // mutation hook for forgot password API call
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+
   const navigate = useNavigate();
 
   // Formik configuration
@@ -44,21 +44,28 @@ const ForgotPassword = () => {
     validationSchema: ForgotPasswordValidationSchema,
     onSubmit: (values) => {
       // console.log('onForgotPassword', values);
-      forgotUserPassword(values);
+      forgotUserPassword(values); // Call forgotUserPassword function to handle form submission
     },
   });
 
   // Auth forgot password function
   const forgotUserPassword = (email) => {
+    // Call the forgotUserPassword mutation with the email
     forgotPassword(email)
       .unwrap()
-      .then((response) => toast.success(response.message))
+      .then((response) => toast.success(response.message)) // Show success message using toast
       .then(() =>
         setTimeout(() => {
           navigate('/auth/login');
         }, 7000)
       )
-      .catch((error) => toast.error(error.error || error.data.error.message));
+      .catch((error) => {
+        const errorMessage =
+          error?.error?.message ||
+          error?.data?.error?.message ||
+          'An error occurred.';
+        toast.error(errorMessage); // Show error message using toast
+      });
   };
 
   return (
@@ -72,7 +79,7 @@ const ForgotPassword = () => {
       }}
     >
       {isLoading ? (
-        <Loading open={isLoading} />
+        <Loading open={isLoading} /> // Show loading indicator while submitting data
       ) : (
         <Paper
           sx={{
@@ -83,7 +90,7 @@ const ForgotPassword = () => {
             justifyContent: 'center',
           }}
         >
-          <ToastContainer />
+          <ToastContainer /> {/* Container for displaying toast messages */}
           <Box sx={{ m: 2 }}>
             <img src={Logo} alt='logo' height='32' width='32' />
           </Box>
@@ -93,6 +100,7 @@ const ForgotPassword = () => {
           <Typography component='h1' variant='subtitle1'>
             Please enter your account details
           </Typography>
+          {/* ----------- Form --------- */}
           <Box
             component='form'
             sx={{

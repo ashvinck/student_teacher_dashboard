@@ -14,15 +14,18 @@ import Error from '../../Components/Error';
 import { UpdateUserAccess } from './UpdateUserAcess';
 import { CardWrapper } from '../../Components/CardWrapper';
 
+// Users Data Component
+//  Renders the users registered in the app
 export const UsersData = () => {
-  const { data, isLoading, isSuccess, isError, error } = useGetUsersQuery();
+  const { data, isLoading, isSuccess, isError, error } = useGetUsersQuery(); // Fetching the users data
 
+  // Delete mutation
   const [deleteUser] = useDeleteUserMutation();
 
-  // Importing value od Search from AppBar Search
+  // Get the search term from Redux store
   const { searchTerm } = useSelector(setSearchTerm);
 
-  // Edit Dialogue
+  // State for edit dialog visibility
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   // To populate Edit Form
@@ -35,27 +38,28 @@ export const UsersData = () => {
     setEditDialogOpen(true);
   };
 
+  // Close Dialog
   const handleSaveEdit = async () => {
     setEditDialogOpen(false);
   };
-  // Getting Id for update and delete
 
-  // Delete Function
+  //  Function to handle DELETE User
   const handleDelete = (email) => {
-    console.log(email);
+    // Alert to confirm delete
     const confirmDelete = window.confirm(
       'Do you really want to delete this item?'
     );
+    //  If yes , Call the deleteStaffData mutation with the classId and id
     if (confirmDelete) {
       deleteUser({ email })
         .unwrap()
-        .then((response) => toast.success(response.message))
+        .then((response) => toast.success(response.message)) // Show success message using toast
         .catch((error) => {
           const errorMessage =
             error?.error?.message ||
             error?.data?.error?.message ||
             'An error occurred.';
-          toast.error(errorMessage);
+          toast.error(errorMessage); // Show error message using toast
         });
     } else return;
   };
@@ -162,9 +166,12 @@ export const UsersData = () => {
 
   let content;
 
+  // Show loading state while fetching data
   if (isLoading) {
     content = <Loading open={isLoading} />;
-  } else if (isSuccess) {
+  }
+  // Render the staff container if data is successfully fetched
+  else if (isSuccess) {
     content = (
       <CardWrapper title='User Access Control'>
         <Box sx={{ height: '100%', width: '100%', marginTop: '20px' }}>
@@ -180,6 +187,7 @@ export const UsersData = () => {
               noRowsOverlay: CustomNoRowsOverlay,
             }}
           />
+          {/* ----- Dialog for displaying Edit User Form ------ */}
           <Dialog open={editDialogOpen} onClose={handleSaveEdit}>
             <DialogContent>
               <UpdateUserAccess data={editedItem} />
@@ -188,6 +196,7 @@ export const UsersData = () => {
         </Box>
       </CardWrapper>
     );
+    // Show error message if there's an error fetching data
   } else if (isError) {
     content = <Error error={error} />;
   }

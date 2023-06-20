@@ -32,9 +32,9 @@ const MenuProps = {
     },
   },
 };
-
 const accessArray = ['admin', 'teacher', 'student'];
-// Form validation Schema
+
+// Define Form validation schema using yup
 const ValidationSchema = yup.object({
   classAssigned: yup.array().required('Select Accessible classes'),
   role: yup.string().required('Please enter the role of the user'),
@@ -42,18 +42,21 @@ const ValidationSchema = yup.object({
 });
 
 export const UpdateUserAccess = ({ data }) => {
+  // Mutation hook for handling update of users
   const [updateUser, { isLoading }] = useUpdateUserMutation();
 
+  // Function to handle update userAccess data
   const updateUserAccessData = (data) => {
+    // Call the updateStaffData mutation with the classId and staff data
     updateUser(data)
       .unwrap()
-      .then((response) => toast.success(response.message))
+      .then((response) => toast.success(response.message)) // Show success message using toast
       .catch((error) => {
         const errorMessage =
           error?.error?.message ||
           error?.data?.error?.message ||
           'An error occurred.';
-        toast.error(errorMessage);
+        toast.error(errorMessage); // Show error message using toast
       });
   };
   // Formik form Handling
@@ -77,15 +80,15 @@ export const UpdateUserAccess = ({ data }) => {
           classAssigned: values.classAssigned,
         },
       };
-      updateUserAccessData(data);
+      updateUserAccessData(data); // Call updateAcessfunction to handle form submission
     },
   });
 
   return (
     <CardWrapper title='Update User Access'>
-      <ToastContainer />
+      <ToastContainer /> {/* Container for displaying toast messages */}
       {isLoading ? (
-        <Loading open={isLoading} />
+        <Loading open={isLoading} /> // Show loading indicator while submitting data
       ) : (
         <Box
           component='form'
@@ -97,6 +100,7 @@ export const UpdateUserAccess = ({ data }) => {
           }}
           onSubmit={formik.handleSubmit}
         >
+          {/* ---------- Dashboard Access ----------- */}
           <Box
             sx={{
               display: 'flex',
@@ -113,6 +117,7 @@ export const UpdateUserAccess = ({ data }) => {
             />
           </Box>
 
+          {/* ----------- Disabled Email ------------ */}
           <TextField
             id='email'
             value={formik.values.email}
@@ -121,6 +126,7 @@ export const UpdateUserAccess = ({ data }) => {
             fullWidth
           />
 
+          {/* -------- Multiple Select ClassAssigned -------  */}
           <FormControl fullWidth>
             <InputLabel id='demo-multiple-checkbox-label'>
               Classes Assigned

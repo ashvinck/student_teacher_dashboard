@@ -12,9 +12,12 @@ import Error from '../../Components/Error';
 import { CustomNoRowsOverlay } from '../../Components/NoRowsOverlay';
 
 export const Examination = () => {
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
+  // Query hook for fetching studentData
   const { data, isLoading, isSuccess, isError, error } =
     useGetStudentDataQuery(classId);
+
+  //  Retrieving from Redux Store
   //  Importing values of Search from AppBar Search
   const { searchTerm } = useSelector(setSearchTerm);
 
@@ -48,8 +51,10 @@ export const Examination = () => {
   let content;
 
   if (isLoading) {
-    content = <Loading open={isLoading} />;
-  } else if (isSuccess) {
+    content = <Loading open={isLoading} />; // Show loading state while fetching data
+  }
+  // Render the staff container if data is successfully fetched
+  else if (isSuccess) {
     content = (
       <CardWrapper title='Examinations'>
         <Box sx={{ height: '100%', width: '100%', marginTop: '20px' }}>
@@ -73,7 +78,9 @@ export const Examination = () => {
         </Box>
       </CardWrapper>
     );
-  } else if (isError) {
+  }
+  // Show error message if there's an error fetching data
+  else if (isError) {
     content = <Error error={error} />;
   }
   return content;

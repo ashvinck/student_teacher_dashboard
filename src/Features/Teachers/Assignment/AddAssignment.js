@@ -42,16 +42,22 @@ const StyledTypography = styled(Typography)(() => ({
 }));
 
 export const AddAssignments = () => {
-  const { classId } = useParams(); //for identification of the class
+  const { classId } = useParams(); // Retrieve classId from URL parameters
 
-  const [addAssignment, { isLoading }] = useAddAssignmentMutation(); //POST API request
+  const [addAssignment, { isLoading }] = useAddAssignmentMutation(); // Mutation hook for adding assignment
 
-  // Adding Assignment and response Handling
+  // Function to handle adding assignment and response handling
   const AddAssignment = (data) => {
     addAssignment({ classId: classId, data })
       .unwrap()
-      .then((response) => toast.success(response.message))
-      .catch((error) => toast.error(error.error || error.data.error.message));
+      .then((response) => toast.success(response.message)) // Show success message using toast
+      .catch((error) => {
+        const errorMessage =
+          error?.error?.message ||
+          error?.data?.error?.message ||
+          'An error occurred.';
+        toast.error(errorMessage); // Show error message using toast
+      });
   };
 
   // Formik validationSchema
@@ -65,16 +71,16 @@ export const AddAssignments = () => {
     },
     validationSchema: ValidationSchema,
     onSubmit: (values) => {
-      console.log('onAddAssignment', values);
-      AddAssignment(values);
+      // console.log('onAddAssignment', values);
+      AddAssignment(values); // Call addAssignment function to handle form submission
     },
   });
   return (
     // Title
     <CardWrapper title='Add Assignment'>
-      <ToastContainer />
+      <ToastContainer /> {/* Container for displaying toast messages */}
       {isLoading ? (
-        <Loading open={isLoading} />
+        <Loading open={isLoading} /> // Show loading indicator while submitting data
       ) : (
         <Box
           component='form'
@@ -168,6 +174,7 @@ export const AddAssignments = () => {
             variant='outlined'
             sx={{ color: '#4e73df', fontWeight: '600' }}
             type='submit'
+            disabled={formik.isSubmitting} // Disable the button when submitting the form
           >
             Upload Task
           </Button>

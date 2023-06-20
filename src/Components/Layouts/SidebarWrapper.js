@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Button, Divider, Drawer, Hidden } from '@mui/material';
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import { Box, Divider, Drawer, Fab, Hidden } from '@mui/material';
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import styled from '@emotion/styled';
 import MuiDrawer from '@mui/material/Drawer';
 
@@ -15,13 +15,9 @@ import Logo from '../../Assets/Images/logo512.png';
 import { SideNavLinks } from './SideNavLinks';
 import { drawerWidth, fullDrawerWidth } from './DrawerWidth';
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.main,
-  width: '2.5rem',
-  height: '2.5rem',
-  margin: '0.5rem',
+const StyledBox = styled(Box)(() => ({
   textAlign: 'center',
-  borderRadius: '12rem',
+  margin: '20px',
 }));
 
 // For toggling the drawer sideways (visible above md screens)
@@ -144,13 +140,17 @@ export const SidebarWrapper = () => {
               justifyContent: 'center',
             }}
           >
-            <StyledButton onClick={handleDrawer}>
+            <StyledBox onClick={handleDrawer}>
               {openWide ? (
-                <ChevronLeft fontSize='large' />
+                <Fab color='primary' size='small'>
+                  <KeyboardArrowLeft />
+                </Fab>
               ) : (
-                <ChevronRight fontSize='large' />
+                <Fab color='primary' size='small'>
+                  <KeyboardArrowRight />
+                </Fab>
               )}
-            </StyledButton>
+            </StyledBox>
           </Box>
         </DrawerWide>
       </Hidden>

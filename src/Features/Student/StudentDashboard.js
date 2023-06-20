@@ -1,41 +1,47 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
+
 import { useGetStudentDataQuery } from './studentApiSlice';
 import Loading from '../../Components/Loading';
 import Error from '../../Components/Error';
-import { PageTitle } from '../../Components/PageTitle';
 import { SummaryBox } from '../../Components/Boxes/SummaryBox';
 import { AttendanceCharts } from '../../Components/Boxes/AttendanceCharts';
 import { ResultsChart } from '../../Components/Boxes/ResultsChart';
 import { Timetable } from './Timetable';
-import { useParams } from 'react-router-dom';
 
 const StudentDashboard = () => {
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
+
+  // Query hook for fetching studentData
   const { data, isLoading, isSuccess, isError, error } =
     useGetStudentDataQuery(classId);
 
-  const miscellaneousData = data?.miscellaneousInfo;
-  const attendanceData = data?.attendance;
-  const resultsData = data?.results;
-  const totalStudents = data?.studentInfo.length;
+  // Filtering Data from API response
+  const { miscellaneousInfo, attendance, results, studentInfo } = data || {};
+  const totalStudents = studentInfo?.length;
 
   let content;
 
   if (isLoading) {
-    content = <Loading open={isLoading} />;
-  } else if (isSuccess) {
+    content = <Loading open={isLoading} />; // Show loading state while fetching data
+  }
+  // Render the staff container if data is successfully fetched
+  else if (isSuccess) {
     content = (
       <Box sx={{ mt: 2 }}>
-        <SummaryBox data={miscellaneousData} />
-        <AttendanceCharts data={attendanceData} />
-        <ResultsChart data={resultsData} students={totalStudents} />
+        <SummaryBox data={miscellaneousInfo} />
+        <AttendanceCharts data={attendance} />
+        <ResultsChart data={results} students={totalStudents} />
         <Timetable />
       </Box>
     );
-  } else if (isError) {
+  }
+  // Show error message if there's an error fetching data
+  else if (isError) {
     content = <Error error={error} />;
   }
   return content;
 };
+
 export default StudentDashboard;

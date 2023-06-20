@@ -14,21 +14,20 @@ import { CustomNoRowsOverlay } from '../../../Components/NoRowsOverlay';
 import { UpdateStaff } from './UpdateStaff';
 
 export const ViewStaffInfo = ({ data }) => {
-  // Getting clsId
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
-  // Delete StaffData API call
-  const [deleteStaffData, { isLoading }] = useDeleteStaffDataMutation();
+  const [deleteStaffData, { isLoading }] = useDeleteStaffDataMutation(); // mutation hook for deleting staff data
 
-  //  Importing values of Search from AppBar Search
+  // Get the search term from Redux store
   const { searchTerm } = useSelector(setSearchTerm);
 
-  // Edit Dialogue
+  // State for edit dialog visibility
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   // Getting Id for update and delete
   const [selectedItemId, setSelectedItemId] = useState(null);
 
+  // Edited item for update
   const [editedItem, setEditedItem] = useState({
     id: '',
     subject: '',
@@ -36,7 +35,7 @@ export const ViewStaffInfo = ({ data }) => {
     contactInfo: '',
   });
 
-  // Edit Function
+  // Function to handle edit staff data
   const handleEdit = (id) => {
     const selectedItem = data?.find((item) => item.id === id);
     if (selectedItem) {
@@ -52,19 +51,21 @@ export const ViewStaffInfo = ({ data }) => {
 
   // Delete Function
   const handleDelete = (id) => {
+    // Alert to confirm delete
     const confirmDelete = window.confirm(
       'Do you really want to delete this item?'
     );
+    //  If yes , Call the deleteStaffData mutation with the classId and id
     if (confirmDelete) {
       deleteStaffData({ classId: classId, id })
         .unwrap()
-        .then((response) => toast.success(response.message))
+        .then((response) => toast.success(response.message)) // Show success message using toast
         .catch((error) => {
           const errorMessage =
             error?.error?.message ||
             error?.data?.error?.message ||
             'An error occurred.';
-          toast.error(errorMessage);
+          toast.error(errorMessage); // Show error message using toast
         });
     } else return;
   };
@@ -137,9 +138,9 @@ export const ViewStaffInfo = ({ data }) => {
   return (
     // Data-Grid
     <Box sx={{ height: '100%', width: '100%', marginTop: '20px' }}>
-      <ToastContainer />
+      <ToastContainer /> {/* Container for displaying toast messages */}
       {isLoading ? (
-        <Loading open={isLoading} />
+        <Loading open={isLoading} /> // Show loading state while fetching data
       ) : (
         <>
           <DataGrid
@@ -153,6 +154,7 @@ export const ViewStaffInfo = ({ data }) => {
               noRowsOverlay: CustomNoRowsOverlay,
             }}
           />
+          {/* ------------ Form for Updating ---------- */}
           <Dialog open={editDialogOpen} onClose={handleSaveEdit}>
             <DialogContent>
               <UpdateStaff data={editedItem} id={selectedItemId} />

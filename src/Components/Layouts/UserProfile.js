@@ -70,7 +70,7 @@ export const UserProfile = () => {
 
       <Divider sx={{ my: 2 }} />
 
-      <Grid container xs={12}>
+      <Grid container spacing={1}>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             variant='contained'

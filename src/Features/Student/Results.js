@@ -1,22 +1,25 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-
-import { useGetStudentDataQuery } from './studentApiSlice';
 import { useSelector } from 'react-redux';
-import { setSearchTerm } from '../Search/Searchslice';
-import Loading from '../../Components/Loading';
-import { CardWrapper } from '../../Components/CardWrapper';
+import { useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { CustomNoRowsOverlay } from '../../Components/NoRowsOverlay';
+
+import { useGetStudentDataQuery } from './studentApiSlice';
+import { setSearchTerm } from '../Search/Searchslice';
+import Loading from '../../Components/Loading';
 import Error from '../../Components/Error';
+import { CardWrapper } from '../../Components/CardWrapper';
+import { CustomNoRowsOverlay } from '../../Components/NoRowsOverlay';
 
 export const Results = () => {
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
+
+  // Query hook for fetching studentData
   const { data, isLoading, isSuccess, isError, error } =
     useGetStudentDataQuery(classId);
 
   //  Importing values of Search from AppBar Search
+  //  Retrieving Search Term from Redux Store
   const { searchTerm } = useSelector(setSearchTerm);
 
   // Column for Data-Grid
@@ -26,7 +29,7 @@ export const Results = () => {
     {
       field: 'description',
       headerName: 'Description',
-      width: 600,
+      width: 900,
       renderCell: (params) => (
         <div style={{ maxHeight: '100px', overflowY: 'auto' }}>
           {params.value}
@@ -49,8 +52,10 @@ export const Results = () => {
   let content;
 
   if (isLoading) {
-    content = <Loading open={isLoading} />;
-  } else if (isSuccess) {
+    content = <Loading open={isLoading} />; // Show loading state while fetching data
+  }
+  // Render the staff container if data is successfully fetched
+  else if (isSuccess) {
     content = (
       <CardWrapper title='Results'>
         <Box sx={{ height: '100%', width: '100%', marginTop: '20px' }}>
@@ -74,7 +79,9 @@ export const Results = () => {
         </Box>
       </CardWrapper>
     );
-  } else if (isError) {
+  }
+  // Show error message if there's an error fetching data
+  else if (isError) {
     content = <Error error={error} />;
   }
   return content;

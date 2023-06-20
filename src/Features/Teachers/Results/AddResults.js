@@ -37,21 +37,22 @@ const StyledTypography = styled(Typography)(() => ({
 }));
 
 export const AddResults = () => {
-  const { classId } = useParams(); //for identifying the class
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
-  const [addResults, { isLoading }] = useAddResultsMutation(); //POST API Call
+  const [addResults, { isLoading }] = useAddResultsMutation(); // mutation hook for adding results
 
   // Add Results Function and response handling
   const addRslt = (data) => {
+    // Call the addResults mutation with the classId and data
     addResults({ classId: classId, data })
       .unwrap()
-      .then((response) => toast.success(response.message))
+      .then((response) => toast.success(response.message)) // Show success message using toast
       .catch((error) => {
         const errorMessage =
           error?.error?.message ||
           error?.data?.error?.message ||
           'An error occurred.';
-        toast.error(errorMessage);
+        toast.error(errorMessage); // Show error message using toast
       });
   };
 
@@ -66,7 +67,7 @@ export const AddResults = () => {
     validationSchema: ResultsValidationSchema,
     onSubmit: (values) => {
       // console.log('onResultUpload', values);
-      addRslt(values);
+      addRslt(values); // Call addResult function to handle form submission
     },
   });
 
@@ -83,9 +84,9 @@ export const AddResults = () => {
         spacing={3}
         onSubmit={formik.handleSubmit}
       >
-        <ToastContainer />
+        <ToastContainer /> {/* Container for displaying toast messages */}
         {isLoading ? (
-          <Loading open={isLoading} />
+          <Loading open={isLoading} /> // Show loading indicator while submitting data
         ) : (
           <>
             {/* ------ ID ------- */}
@@ -174,7 +175,12 @@ export const AddResults = () => {
             </Grid>
             {/* ----------- Submit Button --------  */}
             <Grid item xs={12}>
-              <Button variant='contained' type='submit' fullWidth>
+              <Button
+                variant='contained'
+                type='submit'
+                fullWidth
+                disabled={formik.isSubmitting} // Disable the button when submitting the form
+              >
                 Submit
               </Button>
             </Grid>

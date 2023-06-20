@@ -141,7 +141,7 @@ export const Attendance = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {students.map((student, index) => (
+              {students?.map((student, index) => (
                 <TableRow key={index}>
                   <TableCell>
                     <Typography

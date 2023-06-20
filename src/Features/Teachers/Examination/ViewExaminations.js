@@ -13,23 +13,23 @@ import { UpdateExamination } from './UpdateExamination';
 import { CustomNoRowsOverlay } from '../../../Components/NoRowsOverlay';
 
 export const ViewExaminations = ({ data }) => {
-  // Getting ClsId
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
-  // Delete Examination API Callback
+  // mutation hook for deleting examination
   const [deleteExamination] = useDeleteExaminationMutation();
 
+  // Get the search term from Redux Store
   // Importing value od Search from AppBar Search
   const { searchTerm } = useSelector(setSearchTerm);
 
-  // Edit Dialogue
+  // State for edit dialog visibility
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   // Getting Id for update and delete
   const [selectedItemId, setSelectedItemId] = useState(null);
 
   // For selecting staff list in edit dialog
-  const staffData = data?.staff;
+  const { staff } = data || {};
 
   // To populate Edit Form
   const [editedItem, setEditedItem] = useState({
@@ -52,14 +52,22 @@ export const ViewExaminations = ({ data }) => {
 
   // Delete Function
   const handleDelete = (id) => {
+    // Alert to confirm delete
     const confirmDelete = window.confirm(
       'Do you really want to delete this item?'
     );
+    //  If yes , Call the deleteExam mutation with the classId and id
     if (confirmDelete) {
       deleteExamination({ classId: classId, id })
         .unwrap()
-        .then((response) => toast.success(response.message))
-        .catch((error) => toast.error(error.error || error.data.error.message));
+        .then((response) => toast.success(response.message)) // Show success message using toast
+        .catch((error) => {
+          const errorMessage =
+            error?.error?.message ||
+            error?.data?.error?.message ||
+            'An error occurred.';
+          toast.error(errorMessage); // Show error message using toast
+        });
     } else return;
   };
 
@@ -133,7 +141,7 @@ export const ViewExaminations = ({ data }) => {
         <DialogContent>
           <UpdateExamination
             data={editedItem}
-            staffData={staffData}
+            staffData={staff}
             id={selectedItemId}
           />
         </DialogContent>

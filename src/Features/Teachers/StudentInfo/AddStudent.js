@@ -41,15 +41,21 @@ const StyledTypography = styled(Typography)(() => ({
 }));
 
 export const AddStudent = () => {
-  const { classId } = useParams(); // to identify the class
-  const [addStudent, { isLoading }] = useAddStudentMutation(); // POST API Call
+  const { classId } = useParams(); // Retrieve classId from URL parameters
+  const [addStudent, { isLoading }] = useAddStudentMutation(); // Mutation hook for adding student
 
   // Adding Student Data and response handling
   const AddSdata = (data) => {
     addStudent({ classId: classId, data })
       .unwrap()
-      .then((response) => toast.success(response.message))
-      .catch((error) => toast.error(error.error || error.data.error.message));
+      .then((response) => toast.success(response.message)) // Show success message using toast
+      .catch((error) => {
+        const errorMessage =
+          error?.error?.message ||
+          error?.data?.error?.message ||
+          'An error occurred.';
+        toast.error(errorMessage); // Show error message using toast
+      });
   };
   // Formik validationSchema
   const formik = useFormik({
@@ -63,16 +69,16 @@ export const AddStudent = () => {
     validationSchema: ValidationSchema,
     onSubmit: (values) => {
       // console.log('onAddStudent', values);
-      AddSdata(values);
+      AddSdata(values); // Call addStudentData function to handle form submission
     },
   });
 
   return (
     // Title
     <CardWrapper title='Add Student'>
-      <ToastContainer />
+      <ToastContainer /> {/* Container for displaying toast messages */}
       {isLoading ? (
-        <Loading open={isLoading} />
+        <Loading open={isLoading} /> // Show loading indicator while submitting data
       ) : (
         <Box
           component='form'
@@ -166,7 +172,12 @@ export const AddStudent = () => {
               : ''}
           </StyledTypography>
           {/* --------- Submit Button ---------- */}
-          <Button variant='outlined' type='submit'>
+          <Button
+            variant='outlined'
+            sx={{ color: '#4e73df', fontWeight: '600' }}
+            type='submit'
+            disabled={formik.isSubmitting} // Disable the button when submitting the form
+          >
             Add Student
           </Button>
         </Box>

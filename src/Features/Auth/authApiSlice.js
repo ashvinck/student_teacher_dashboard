@@ -11,9 +11,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    verifyAccount: builder.query({
-      query: ({ email, token }) => `auth/verifyaccount/${email}/${token}`,
-    }),
+    // verifyAccount: builder.query({
+    //   query: ({ email, token }) => `auth/verifyaccount/${email}/${token}`,
+    // }),
 
     login: builder.mutation({
       query: (credentials) => ({
@@ -60,7 +60,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useSignupMutation,
-  useVerifyAccountQuery,
   useLoginMutation,
   useRefreshMutation,
   useForgotPasswordMutation,

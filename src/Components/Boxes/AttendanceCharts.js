@@ -1,22 +1,28 @@
-import { Grid } from '@mui/material';
 import React from 'react';
+import dayjs from 'dayjs';
+import { Grid } from '@mui/material';
+
 import { CardWrapper } from '../CardWrapper';
 import { AbsentList } from '../AbsentList';
-import dayjs from 'dayjs';
 import { LineChart } from '../Charts/LineChart';
 
 export const AttendanceCharts = ({ data }) => {
   // Filtering data for the past 30 days
-  const filteredData = data.filter((item) => {
-    const date = dayjs(item.date, 'DD/MMM/YYYY');
+  const filteredData = data?.filter(({ date }) => {
     const currentDate = dayjs();
     const thirtyDaysAgo = currentDate.subtract(30, 'day');
 
-    return date.isAfter(thirtyDaysAgo) || date.isSame(thirtyDaysAgo, 'day');
+    const itemDate = dayjs(date, 'DD/MMM/YYYY');
+    return (
+      itemDate.isAfter(thirtyDaysAgo) || itemDate.isSame(thirtyDaysAgo, 'day')
+    );
   });
+
   // For Attendance Chart
-  const dates = filteredData?.map((res) => res.date);
-  const percent = filteredData?.map((res) => res.attendancePercentage);
+  const dates = filteredData?.map(({ date }) => date);
+  const percent = filteredData?.map(
+    ({ attendancePercentage }) => attendancePercentage
+  );
   const title = 'Attendance Percentage';
 
   return (

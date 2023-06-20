@@ -11,18 +11,21 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { UpdateAssignment } from './UpdateAssignment';
 import { CustomNoRowsOverlay } from '../../../Components/NoRowsOverlay';
+import Loading from '../../../Components/Loading';
 
 export const ViewAssignments = ({ data }) => {
-  // Getting clsId
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
-  // Delete Assignment API Call
-  const [deleteAssignment] = useDeleteAssignmentMutation();
+  // mutation hook for deleting assignments
+  const [deleteAssignment, { isLoading }] = useDeleteAssignmentMutation();
 
+  // Getting Search parameters from Redux Store
   //  Importing values of Search from AppBar Search
   const { searchTerm } = useSelector(setSearchTerm);
-  // Edit Dialogue
+
+  // State for edit dialog visibility
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+
   // Getting Id for update and delete
   const [selectedItemId, setSelectedItemId] = useState(null);
   // To Populate Edit Form
@@ -34,32 +37,42 @@ export const ViewAssignments = ({ data }) => {
     assignedBy: '',
   });
 
-  // Edit Function
+  // Function to handle edit assignment data
   const handleEdit = (id) => {
-    const selectedItem = data?.assignments?.find((item) => item.id === id);
+    const selectedItem = data?.find((item) => item.id === id);
     setSelectedItemId(id);
     setEditedItem(selectedItem);
     setEditDialogOpen(true);
   };
+
+  // Closing Dialog
   const handleSaveEdit = async () => {
     setEditDialogOpen(false);
   };
 
   // Delete Function
   const handleDelete = (id) => {
+    // Alert to confirm delete
     const confirmDelete = window.confirm(
       'Do you really want to delete this item?'
     );
+    //  If yes , Call the deleteAssignment mutation with the classId and id
     if (confirmDelete) {
       deleteAssignment({ classId: classId, id })
         .unwrap()
-        .then((response) => toast.success(response.message))
-        .catch((error) => toast.error(error.error || error.data.error.message));
+        .then((response) => toast.success(response.message)) // Show success message using toast
+        .catch((error) => {
+          const errorMessage =
+            error?.error?.message ||
+            error?.data?.error?.message ||
+            'An error occurred.';
+          toast.error(errorMessage); // Show error message using toast
+        });
     } else return;
   };
 
   // For Searching through Data
-  const filteredData = data?.assignments?.filter((item) => {
+  const filteredData = data?.filter((item) => {
     const term = searchTerm ?? '';
     if (term.trim() === '') return true;
     return (
@@ -110,22 +123,29 @@ export const ViewAssignments = ({ data }) => {
     // Data-Grid
     <Box sx={{ height: '100%', width: '100%', marginTop: '20px' }}>
       <ToastContainer />
-      <DataGrid
-        style={{ padding: '20px' }}
-        rows={filteredData}
-        columns={columns}
-        rowsPerPageOptions={[5, 10, 20]}
-        autoHeight
-        disableSelectionOnClick
-        slots={{
-          noRowsOverlay: CustomNoRowsOverlay,
-        }}
-      />
-      <Dialog open={editDialogOpen} onClose={handleSaveEdit}>
-        <DialogContent>
-          <UpdateAssignment data={editedItem} id={selectedItemId} />
-        </DialogContent>
-      </Dialog>
+      {isLoading ? (
+        <Loading open={isLoading} /> // Show loading state while fetching data
+      ) : (
+        <>
+          <DataGrid
+            style={{ padding: '20px' }}
+            rows={filteredData || []}
+            columns={columns}
+            rowsPerPageOptions={[5, 10, 20]}
+            autoHeight
+            disableSelectionOnClick
+            slots={{
+              noRowsOverlay: CustomNoRowsOverlay,
+            }}
+          />
+          {/* ------------ Form for Updating ---------- */}
+          <Dialog open={editDialogOpen} onClose={handleSaveEdit}>
+            <DialogContent>
+              <UpdateAssignment data={editedItem} id={selectedItemId} />
+            </DialogContent>
+          </Dialog>
+        </>
+      )}
     </Box>
   );
 };

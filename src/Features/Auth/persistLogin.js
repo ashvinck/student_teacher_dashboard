@@ -14,6 +14,7 @@ const PersistLogin = () => {
 
   const [trueSuccess, setTrueSuccess] = useState(false);
 
+  // mutation hook for Persist Login
   const [refresh, { isUninitialized, isLoading, isSuccess, isErorr, error }] =
     useRefreshMutation();
 
@@ -34,10 +35,15 @@ const PersistLogin = () => {
 
   let content;
   if (!persist) {
+    // If persist is false, render the nested routes
     content = <Outlet />;
-  } else if (isLoading) {
+  }
+  // If loading, show the loading indicator
+  else if (isLoading) {
     content = <Loading open={isLoading} />;
-  } else if (isErorr) {
+  }
+  // If there's an error, display the error message and a link to the login page
+  else if (isErorr) {
     content = (
       <>
         <div>
@@ -51,9 +57,11 @@ const PersistLogin = () => {
     );
   } else if (isSuccess && trueSuccess) {
     //persist: yes, token: yes
+    // If the refresh was successful, render the nested routes
     content = <Outlet />;
   } else if (token && isUninitialized) {
     //persist: yes, token: yes
+    // If there is a token and it's in the uninitialized state, render the nested routes
     content = <Outlet />;
   }
 

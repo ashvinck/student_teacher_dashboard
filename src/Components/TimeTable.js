@@ -52,8 +52,10 @@ export const TimeTable = ({ data }) => {
               >
                 {row.day}
               </TableCell>
-              {row?.periods?.map((period) => (
-                <TableCell align='center'>{period}</TableCell>
+              {row?.periods?.map((period, index) => (
+                <TableCell align='center' key={index}>
+                  {period}
+                </TableCell>
               ))}
             </TableRow>
           ))}

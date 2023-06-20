@@ -10,6 +10,7 @@ import { useAddStaffDataMutation } from '../adminApiSlice';
 import { CardWrapper } from '../../../Components/CardWrapper';
 import Loading from '../../../Components/Loading';
 
+// Define validation schema using yup
 const validationSchema = yup.object().shape({
   id: yup.string().required('Please provide a valid ID'),
   subject: yup.string().required('Subject is required'),
@@ -18,22 +19,25 @@ const validationSchema = yup.object().shape({
 });
 
 export const AddStaffInfo = () => {
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
-  const [addStaffData, { isLoading }] = useAddStaffDataMutation();
+  const [addStaffData, { isLoading }] = useAddStaffDataMutation(); // mutation hook for adding staff data
 
+  // Function to handle adding staff data
   const addStaff = (data) => {
+    // Call the addStaffData mutation with the classId and staff data
     addStaffData({ classId: classId, data })
       .unwrap()
-      .then((response) => toast.success(response.message))
+      .then((response) => toast.success(response.message)) // Show success message using toast
       .catch((error) => {
         const errorMessage =
           error?.error?.message ||
           error?.data?.error?.message ||
           'An error occurred.';
-        toast.error(errorMessage);
+        toast.error(errorMessage); // Show error message using toast
       });
   };
+
   const formik = useFormik({
     initialValues: {
       id: '',
@@ -43,16 +47,15 @@ export const AddStaffInfo = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
-      addStaff(values);
+      addStaff(values); // Call addStaff function to handle form submission
     },
   });
 
   return (
     <CardWrapper title='Update Staff Table'>
-      <ToastContainer />
+      <ToastContainer /> {/* Container for displaying toast messages */}
       {isLoading ? (
-        <Loading open={isLoading} />
+        <Loading open={isLoading} /> // Show loading indicator while submitting data
       ) : (
         <Grid
           container
@@ -63,6 +66,7 @@ export const AddStaffInfo = () => {
           spacing={3}
           onSubmit={formik.handleSubmit}
         >
+          {/* ------ ID --------- */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -75,7 +79,7 @@ export const AddStaffInfo = () => {
               helperText={formik.touched.id && formik.errors.id}
             />
           </Grid>
-
+          {/* ---------- Name ----------- */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -89,6 +93,7 @@ export const AddStaffInfo = () => {
             />
           </Grid>
 
+          {/* ----------- Subject --------- */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -102,6 +107,7 @@ export const AddStaffInfo = () => {
             />
           </Grid>
 
+          {/* ---------- ContactInfo -------- */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -119,7 +125,12 @@ export const AddStaffInfo = () => {
             />
           </Grid>
           <Grid item xs={12} textAlign='center'>
-            <Button type='submit' variant='contained' color='primary'>
+            <Button
+              type='submit'
+              variant='contained'
+              color='primary'
+              disabled={formik.isSubmitting} // Disable the button when submitting the form
+            >
               Submit
             </Button>
           </Grid>

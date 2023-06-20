@@ -6,6 +6,7 @@ import { SummaryCard } from '../SummaryCard';
 export const SummaryBox = ({ data }) => {
   let CardsInfo = CardsData;
 
+  // Updating Progress
   const updatedCardsData = CardsInfo.map((card) => {
     const progressItem = data?.find((item) =>
       item.title.toLowerCase().includes(card.title.toLowerCase())

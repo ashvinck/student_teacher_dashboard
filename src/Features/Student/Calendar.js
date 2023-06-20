@@ -13,6 +13,7 @@ export const Calendar = (events) => {
     <CardWrapper title='Calendar'>
       <Box sx={{ height: '550px' }}>
         <Box sx={{ p: 1, height: '100%' }}>
+          {/* ---------- Full Calendar ---------- */}
           <FullCalendar
             plugins={[
               dayGridPlugin,

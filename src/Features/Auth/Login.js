@@ -51,7 +51,7 @@ const LoginValidationSchema = yup.object({
 
 // Login Form
 const Login = () => {
-  const [login, { isLoading }] = useLoginMutation(); //passing data to login mutation
+  const [login, { isLoading }] = useLoginMutation(); // mutation hook for login
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -64,12 +64,13 @@ const Login = () => {
     validationSchema: LoginValidationSchema,
     onSubmit: (values) => {
       // console.log('onLogin', values);
-      loginUser(values); // calling auth login function
+      loginUser(values); // Call updateStaff function to handle form submission
     },
   });
 
   // Auth Login Function
   const loginUser = (credentials) => {
+    // Call the Login mutation with the email and password
     login(credentials)
       .unwrap()
       .then((data) => dispatch(setCredentials(data)))
@@ -79,7 +80,7 @@ const Login = () => {
           error?.error?.message ||
           error?.data?.error?.message ||
           'An error occurred.';
-        toast.error(errorMessage);
+        toast.error(errorMessage); // Show error message using toast
       });
   };
 
@@ -102,7 +103,7 @@ const Login = () => {
       }}
     >
       {isLoading ? (
-        <Loading open={isLoading} />
+        <Loading open={isLoading} /> // Show loading indicator while submitting data
       ) : (
         <Paper
           sx={{
@@ -113,7 +114,7 @@ const Login = () => {
             justifyContent: 'center',
           }}
         >
-          <ToastContainer />
+          <ToastContainer /> {/* Container for displaying toast messages */}
           {/* --- Logo ---- */}
           <Box sx={{ m: 2 }}>
             <img src={Logo} alt='logo' height='32' width='32' />
@@ -124,7 +125,6 @@ const Login = () => {
           <Typography component='h1' variant='subtitle1'>
             Login to your dashboard
           </Typography>
-
           {/* ---Form--- */}
           <Box
             component='form'
@@ -136,7 +136,7 @@ const Login = () => {
             }}
             onSubmit={formik.handleSubmit}
           >
-            {/* ----E-mail---- */}
+            {/* ---- E-mail ---- */}
             <StyledTextField
               required
               id='email'
@@ -153,7 +153,7 @@ const Login = () => {
                 : ''}
             </StyledTypography>
 
-            {/* ---Password---- */}
+            {/* ------- Password ---- */}
             <StyledTextField
               required
               fullWidth
@@ -189,7 +189,6 @@ const Login = () => {
               Login
             </Button>
           </Box>
-
           {/* ----External Links----- */}
           <Box>
             {/* --- Forgot Password --- */}

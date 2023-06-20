@@ -1,37 +1,43 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+
 import { useGetClassDataQuery } from '../adminApiSlice';
 import Loading from '../../../Components/Loading';
-import { AddStaffInfo } from './AddStaff';
 import Error from '../../../Components/Error';
 import { TeacherCardWrapper } from '../../../Components/TeacherCardWrapper';
+import { AddStaffInfo } from './AddStaff';
 import { ViewStaffInfo } from './ViewStaffInfo';
 
-// Main Function
+// StaffContainer component
+// Renders the staff container based on the classId
 export const StaffContainer = () => {
-  // to determine classId
-  const { classId } = useParams();
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
-  // Fetching data
+  // Fetch staff data based on the classId
   const { data, isLoading, isSuccess, isError, error } =
     useGetClassDataQuery(classId);
 
   // Filtering timetable data
-  const staffData = data?.staff;
+  const { staff } = data || {};
 
   let content;
 
+  // Show loading state while fetching data
   if (isLoading) {
     content = <Loading open={isLoading} />;
-  } else if (isSuccess) {
+  }
+  // Render the staff container if data is successfully fetched
+  else if (isSuccess) {
     content = (
       <TeacherCardWrapper
         title='Staff'
-        dialogChildren={<AddStaffInfo data={staffData} />}
-        children={<ViewStaffInfo data={staffData} />}
+        dialogChildren={<AddStaffInfo data={staff} />}
+        children={<ViewStaffInfo data={staff} />}
       />
     );
-  } else if (isError) {
+  }
+  // Show error message if there's an error fetching data
+  else if (isError) {
     content = <Error error={error} />;
   }
   return content;

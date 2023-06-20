@@ -11,7 +11,7 @@ import { useUpdateStudentMutation } from '../teachersApiSlice';
 import Loading from '../../../Components/Loading';
 import { CardWrapper } from '../../../Components/CardWrapper';
 
-// Form Validation
+// Form Validation Schema
 const ValidationSchema = yup.object({
   id: yup
     .string()
@@ -41,16 +41,23 @@ const StyledTypography = styled(Typography)(() => ({
 }));
 
 export const UpdateStudent = ({ data, id }) => {
-  const { classId } = useParams(); // to identify the class
-  console.log('id', id);
-  const [updateStudent, { isLoading }] = useUpdateStudentMutation(); // PUT API Call
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
+
+  const [updateStudent, { isLoading }] = useUpdateStudentMutation(); // Mutation hook for updating student
 
   //Updating Student Data and response handling
   const UpdateStdnt = (data) => {
+    // Call the updateStudent mutation with the classId,id and data
     updateStudent({ classId: classId, id: id, data })
       .unwrap()
-      .then((response) => toast.success(response.message))
-      .catch((error) => toast.error(error.error || error.data.error.message));
+      .then((response) => toast.success(response.message)) // Show success message using toast
+      .catch((error) => {
+        const errorMessage =
+          error?.error?.message ||
+          error?.data?.error?.message ||
+          'An error occurred.';
+        toast.error(errorMessage); // Show error message using toast
+      });
   };
 
   // Formik form Handling
@@ -65,16 +72,16 @@ export const UpdateStudent = ({ data, id }) => {
     validationSchema: ValidationSchema,
     onSubmit: (values) => {
       // console.log('onUpdate', values);
-      UpdateStdnt(values);
+      UpdateStdnt(values); // Call updateStudent fn to handle form submission
     },
   });
 
   return (
     // Title
     <CardWrapper title='Update Student'>
-      <ToastContainer />
+      <ToastContainer /> {/* Container for displaying toast messages */}
       {isLoading ? (
-        <Loading open={isLoading} />
+        <Loading open={isLoading} /> // Show loading indicator while submitting data
       ) : (
         <Box
           component='form'
@@ -168,7 +175,12 @@ export const UpdateStudent = ({ data, id }) => {
               : ''}
           </StyledTypography>
           {/* --------- Submit Button ---------- */}
-          <Button variant='outlined' type='submit'>
+          <Button
+            variant='outlined'
+            sx={{ color: '#4e73df', fontWeight: '600' }}
+            type='submit'
+            disabled={formik.isSubmitting} // Disable the button when submitting the form
+          >
             Add Student
           </Button>
         </Box>

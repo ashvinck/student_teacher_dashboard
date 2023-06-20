@@ -29,11 +29,11 @@ export const LandingPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const classAssigned = useSelector(selectCurrentClassAssigned);
+  const assignedClasses = useSelector(selectCurrentClassAssigned);
   const role = useSelector(selectCurrentRole);
-  const cls = useSelector(selectCurrentClassId);
+  const currentClassId = useSelector(selectCurrentClassId);
 
-  const [classId, setClassId] = useState(cls);
+  const [classId, setClassId] = useState(currentClassId);
   const title = classId === 0 ? 'Select a class' : `Class ${classId}`;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -49,6 +49,7 @@ export const LandingPage = () => {
   const open = Boolean(anchorEl);
   const id = open ? 'select-class' : undefined;
 
+  // Selecting class
   const handleSubmit = () => {
     dispatch(setClass(classId));
     navigate(`${role}/${classId}`);
@@ -114,7 +115,7 @@ export const LandingPage = () => {
                     onChange={(e) => setClassId(e.target.value)}
                     label='Select your Class'
                   >
-                    {classAssigned.map((cls) => (
+                    {assignedClasses.map((cls) => (
                       <MenuItem key={cls} value={cls}>
                         {cls}
                       </MenuItem>

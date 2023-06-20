@@ -13,16 +13,17 @@ import { UpdateResults } from './UpdateResult';
 import { CustomNoRowsOverlay } from '../../../Components/NoRowsOverlay';
 
 export const ViewResults = ({ data }) => {
-  // Getting ClsId
-  const { classId } = useParams();
+  console.log(data);
+  const { classId } = useParams(); // Retrieve classId from the URL parameters
 
-  // Delete Results API Call
+  // mutation hook for deleting results
   const [deleteResults] = useDeleteResultMutation();
 
   // Importing value od Search from AppBar Search
+  // Get the search term from Redux store
   const { searchTerm } = useSelector(setSearchTerm);
 
-  // Edit Dialogue
+  // State for edit dialog visibility
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   // Getting Id for update and delete
@@ -38,7 +39,7 @@ export const ViewResults = ({ data }) => {
 
   // Edit Function
   const handleEdit = (id) => {
-    const selectedItem = data?.results?.find((item) => item.id === id);
+    const selectedItem = data?.find((item) => item.id === id);
     setSelectedItemId(id);
     setEditedItem(selectedItem);
     setEditDialogOpen(true);
@@ -55,8 +56,14 @@ export const ViewResults = ({ data }) => {
     if (confirmDelete) {
       deleteResults({ classId: classId, id })
         .unwrap()
-        .then((response) => toast.success(response.message))
-        .catch((error) => toast.error(error.error || error.data.error.message));
+        .then((response) => toast.success(response.message)) // Show success message using toast
+        .catch((error) => {
+          const errorMessage =
+            error?.error?.message ||
+            error?.data?.error?.message ||
+            'An error occurred.';
+          toast.error(errorMessage); // Show error message using toast
+        });
     } else return;
   };
 
@@ -64,11 +71,11 @@ export const ViewResults = ({ data }) => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 100 },
     { field: 'examType', headerName: 'Examination Name', width: 200 },
-    { field: 'passPercentage', headerName: 'Pass Percentage', width: 100 },
+    { field: 'passPercentage', headerName: 'Pass Percentage', width: 150 },
     {
       field: 'description',
       headerName: 'Description',
-      width: 600,
+      width: 900,
       renderCell: (params) => (
         <div style={{ maxHeight: '100px', overflowY: 'auto' }}>
           {params.value}
@@ -100,10 +107,10 @@ export const ViewResults = ({ data }) => {
 
     if (term.trim() === '') {
       // No search term, display all data
-      setFilteredData(data?.results || []);
+      setFilteredData(data || []);
     } else {
       // Filter data based on search term
-      const filteredExaminations = data?.results?.filter(
+      const filteredExaminations = data?.filter(
         (rslt) =>
           rslt.examType?.toLowerCase().includes(term) ||
           rslt.passPercentage?.toLowerCase().includes(term) ||
@@ -111,7 +118,7 @@ export const ViewResults = ({ data }) => {
       );
       setFilteredData(filteredExaminations || []);
     }
-  }, [searchTerm, data?.results]);
+  }, [searchTerm, data]);
 
   return (
     <Box sx={{ height: '100%', width: '100%', marginTop: '20px' }}>
