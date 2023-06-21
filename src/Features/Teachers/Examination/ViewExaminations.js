@@ -78,7 +78,7 @@ export const ViewExaminations = ({ data }) => {
     {
       field: 'description',
       headerName: 'Description',
-      width: 600,
+      width: 900,
       renderCell: (params) => (
         <div style={{ maxHeight: '100px', overflowY: 'auto' }}>
           {params.value}
