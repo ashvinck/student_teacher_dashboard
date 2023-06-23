@@ -80,3 +80,7 @@ I express my sincere gratitude to all the npm package makers whose contributions
 
 I extend my appreciation to the entire open-source community for their continuous efforts in building and sharing high-quality software. The collaboration and support within the community have been instrumental in the success of this project.
 
+
+## Demo 
+![Dashboard in sm screen](<Demo/Teacher Dashboard sm.png>)
+![Dashboard in lg screen](<Demo/Teacher Dashboard xl.png>)
