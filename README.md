@@ -41,8 +41,7 @@ Note: Ensure that you have Node.js and npm installed on your machine before proc
 ### Demo Credentials
 #### Admin Credentials
 ``` 
-email:admin123@gmail.com
-password:Admin123@#
+Available on request as there has been misuse of the dashboard.
 ```
 
 #### Teacher Credentials
