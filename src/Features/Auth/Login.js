@@ -146,6 +146,7 @@ const Login = () => {
               value={formik.values.email}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              placeholder='teacher123@gmail.com'
             />
             <StyledTypography>
               {formik.touched.email && formik.errors.email
@@ -177,6 +178,7 @@ const Login = () => {
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              placeholder='Teacher123@#'
             />
             <StyledTypography>
               {formik.touched.password && formik.errors.password
