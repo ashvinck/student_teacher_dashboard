@@ -41,20 +41,19 @@ Note: Ensure that you have Node.js and npm installed on your machine before proc
 ### Demo Credentials
 #### Admin Credentials
 ``` 
-email: admin123@gmail.com
-password: Admin123@#
+Available on request as there has been misuse of the dashboard.
 ```
 
 #### Teacher Credentials
 ```
-email: teacher123@gmail.com
-password: Teacher123@#
+email:teacher123@gmail.com
+password:Teacher123@#
 ```
 
 #### Student Credentials
 ```
-email: student123@gmail.com
-password: Student123@#
+email:student123@gmail.com
+password:Student123@#
 ```
 
 3. Explore the various features and functionalities available in the dashboard based on your role and permissions.(only class 9 data available)
@@ -80,3 +79,7 @@ I express my sincere gratitude to all the npm package makers whose contributions
 
 I extend my appreciation to the entire open-source community for their continuous efforts in building and sharing high-quality software. The collaboration and support within the community have been instrumental in the success of this project.
 
+
+## Demo 
+![Dashboard in sm screen](<Demo/Teacher Dashboard sm.png>)
+![Dashboard in lg screen](<Demo/Teacher Dashboard xl.png>)
